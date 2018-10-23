@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 指定Spring配置文件的Schema信息 -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<bean id="xmlTimer" class="csw.java.spring.quartz.XmlTimer"></bean>
+
+	<!-- JobDetail的配置 -->
+	<bean id="xmlInvoker"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="xmlTimer" />
+		<property name="targetMethod" value="execute" />
+	</bean>
+
+
+	<!-- Trigger的配置 -->
+	<bean id="xmlTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="xmlInvoker" />
+		<property name="cronExpression" value="5/10 * * * * ?}" />
+	</bean>
+
+	<!-- Scheduler的配置 -->
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="xmlTrigger" />
+			</list>
+		</property>
+		<property name="autoStartup" value="true" />
+	</bean>
+
+</beans>

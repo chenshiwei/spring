@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:cache="http://www.springframework.org/schema/cache" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+						http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd 
+						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+						http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+	<bean id="helloWorld" class="csw.java.spring.beans.HelloWorld">
+		<property name="name" value="cao"></property>
+	</bean>
+	<bean id="car" class="csw.java.spring.beans.Car">
+		<constructor-arg value="Audi" index="0"></constructor-arg>
+		<constructor-arg value="Shanghai" index="1"></constructor-arg>
+		<constructor-arg value="300000" type="double"></constructor-arg>
+	</bean>
+
+	<bean id="car2" class="csw.java.spring.beans.Car">
+		<constructor-arg value="Baoma"></constructor-arg>
+		<constructor-arg>
+			<value><![CDATA[<ShangHai>]]></value>
+		</constructor-arg>
+		<constructor-arg type="int">
+			<value>54</value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="person" class="csw.java.spring.beans.Person">
+		<property name="name" value="csw"></property>
+		<property name="age" value="31"></property>
+		<!-- <property name="car" ref="car2"></property> -->
+		<!-- <property name="car"> <ref bean="car" /> </property> -->
+		<property name="car">
+			<bean class="csw.java.spring.beans.Car">
+				<constructor-arg value="Ford" index="0"></constructor-arg>
+				<constructor-arg value="changan" index="1"></constructor-arg>
+				<constructor-arg value="300000" type="double"></constructor-arg>
+			</bean>
+		</property>
+		<property name="car.maxSpeed" value="12"></property>
+	</bean>
+
+	<bean id="person2" class="csw.java.spring.beans.Person">
+		<constructor-arg value="Audi"></constructor-arg>
+		<constructor-arg value="4"></constructor-arg>
+		<constructor-arg ref="car2"></constructor-arg>
+		<!-- 级联属性赋值 -->
+		<property name="car.price" value="656559"></property>
+		<!-- <constructor-arg> <null></null> </constructor-arg> -->
+	</bean>
+
+	<bean id="person3" class="csw.java.spring.beans.collections.Person">
+		<property name="name" value="ywc"></property>
+		<property name="age" value="66"></property>
+		<property name="cars">
+			<list>
+				<ref bean="car" />
+				<ref bean="car2" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="newPerson" class="csw.java.spring.beans.collections.NewPerson">
+		<property name="name" value="cmc"></property>
+		<property name="age" value="54"></property>
+		<property name="cars">
+			<map>
+				<entry key="AA" value-ref="car"></entry>
+				<entry key="BB" value-ref="car2"></entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="dataSource" class="csw.java.spring.beans.collections.DataSource">
+		<property name="properties">
+			<props>
+				<prop key="user">root</prop>
+				<prop key="url">jdbc</prop>
+				<prop key="password">12345678</prop>
+			</props>
+		</property>
+	</bean>
+
+	<util:list id="cars">
+		<ref bean="car" />
+		<ref bean="car2" />
+	</util:list>
+
+	<bean id="person4" class="csw.java.spring.beans.collections.Person">
+		<property name="name" value="ywc"></property>
+		<property name="age" value="666"></property>
+		<property name="cars" ref="cars"></property>
+	</bean>
+
+	<bean id="person5" class="csw.java.spring.beans.collections.Person"
+		p:age="30" p:name="Queen" p:cars-ref="cars">
+	</bean>
+
+</beans>  

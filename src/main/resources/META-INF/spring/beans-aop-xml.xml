@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:cache="http://www.springframework.org/schema/cache" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+						http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd 
+						http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+						http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+	<bean id="arithmeticCalculator" class="csw.java.spring.aop.impl.xml.ArithmeticCalculatorImpl"></bean>
+
+	<bean id="loggingAspect" class="csw.java.spring.aop.impl.xml.LoggingAspect"></bean>
+	<bean id="validationAspect" class="csw.java.spring.aop.impl.xml.ValidationAspect"></bean>
+
+	<aop:config>
+		<aop:pointcut
+			expression="execution(public int csw.java.spring.aop.impl.xml.ArithmeticCalculatorImpl.*(int, int))"
+			id="pointcut" />
+		<aop:aspect ref="loggingAspect" order="2">
+			<aop:before method="beforeMethod" pointcut-ref="pointcut" />
+			<aop:after method="afterMethod" pointcut-ref="pointcut" />
+			<aop:after-throwing method="afterThrowing"
+				pointcut-ref="pointcut" throwing="ex" />
+			<aop:after-returning method="afterReturning"
+				pointcut-ref="pointcut" returning="result" />
+		</aop:aspect>
+		<aop:aspect ref="validationAspect" order="1">
+			<aop:before method="validationArgs" pointcut-ref="pointcut" />
+		</aop:aspect>
+	</aop:config>
+
+</beans>
